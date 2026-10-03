@@ -1,233 +1,365 @@
 <!DOCTYPE html>
+
 <html lang="no">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Handleliste</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+
+    * { box-sizing: border-box; }
 
     body {
+
       margin: 0;
+
       padding: 24px 18px;
+
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
       background: #f3f7f2;
+
       color: #25332a;
+
     }
 
     .app {
+
       max-width: 480px;
+
       margin: 0 auto;
+
     }
 
     .top-label {
+
       font-size: 13px;
+
       color: #829087;
+
       margin-bottom: 5px;
+
     }
 
     .list-header {
+
       display: flex;
+
       align-items: center;
+
+      gap: 12px;
+
       margin-bottom: 24px;
+
     }
 
     #current-name {
+
       font-size: 27px;
+
       font-weight: 650;
+
       margin: 0;
+
       flex: 1;
+
+    }
+
+    button {
+
+      font: inherit;
+
+      cursor: pointer;
+
     }
 
     .lists-button {
+
       border: 0;
+
       background: #e2eee2;
+
       color: #52705b;
+
       padding: 9px 13px;
+
       border-radius: 12px;
+
       font-size: 14px;
-      cursor: pointer;
+
     }
 
     .input-row {
+
       display: flex;
+
       gap: 8px;
+
       margin-bottom: 22px;
+
     }
 
     #item-input {
-      flex: 1;
-      min-width: 0;
-      padding: 14px 16px;
-      font-size: 16px;
-      border: 1px solid #e3e9e3;
-      border-radius: 13px;
-      outline: none;
-      background: white;
-    }
 
-    #item-input:focus {
-      border-color: #91b99b;
+      flex: 1;
+
+      min-width: 0;
+
+      padding: 14px 16px;
+
+      font-size: 16px;
+
+      border: 1px solid #e3e9e3;
+
+      border-radius: 13px;
+
+      outline: none;
+
+      background: white;
+
     }
 
     .add-button {
+
       width: 49px;
+
       height: 49px;
+
       border: 0;
+
       border-radius: 13px;
+
       background: #72a67e;
+
       color: white;
+
       font-size: 25px;
-      cursor: pointer;
+
     }
 
     .item {
+
       display: flex;
+
       align-items: center;
+
       min-height: 53px;
+
       padding: 12px 14px;
+
       margin-bottom: 7px;
-      background: rgba(255,255,255,0.82);
+
+      background: rgba(255,255,255,.85);
+
       border: 1px solid #e6ebe6;
+
       border-radius: 13px;
+
     }
 
     .check {
+
       width: 22px;
+
       height: 22px;
+
       border: 1.5px solid #9ca9a0;
+
       border-radius: 50%;
+
       margin-right: 13px;
+
       flex-shrink: 0;
-      cursor: pointer;
+
     }
 
     .item-text {
+
       flex: 1;
+
       font-size: 16px;
-      cursor: pointer;
+
     }
 
     .done .check {
+
       background: #72a67e;
+
       border-color: #72a67e;
+
     }
 
     .done .item-text {
+
       text-decoration: line-through;
+
       color: #a2aaa5;
+
     }
 
-    .delete-item {
+    .delete-item, .delete-list {
+
       border: 0;
+
       background: none;
+
       color: #aab2ac;
+
       font-size: 22px;
-      cursor: pointer;
+
     }
 
-    .empty {
+    .empty, .status {
+
       text-align: center;
-      color: #9aa59e;
-      font-size: 14px;
-      margin-top: 65px;
-    }
 
-    /* Vindu for handlelister */
+      color: #9aa59e;
+
+      font-size: 14px;
+
+      margin-top: 65px;
+
+    }
 
     .overlay {
+
       display: none;
+
       position: fixed;
+
       inset: 0;
-      background: rgba(35, 48, 40, 0.18);
+
+      background: rgba(35,48,40,.18);
+
       padding: 20px;
+
       align-items: center;
+
       justify-content: center;
+
     }
 
-    .overlay.open {
-      display: flex;
-    }
+    .overlay.open { display: flex; }
 
     .panel {
+
       width: 100%;
+
       max-width: 430px;
+
       background: #fbfcfa;
+
       border-radius: 20px;
+
       padding: 22px;
-      box-shadow: 0 15px 50px rgba(40,60,45,0.15);
+
+      box-shadow: 0 15px 50px rgba(40,60,45,.15);
+
     }
 
     .panel h2 {
+
       font-size: 20px;
+
       margin: 0 0 18px;
+
     }
 
     .list-choice {
+
       display: flex;
+
       align-items: center;
+
       padding: 12px 4px;
+
       border-bottom: 1px solid #edf0ed;
+
     }
 
     .list-choice-name {
+
       flex: 1;
+
       font-size: 15px;
+
       cursor: pointer;
+
     }
 
     .active-list {
-      font-weight: 600;
-      color: #52785d;
-    }
 
-    .delete-list {
-      border: 0;
-      background: none;
-      color: #b0b7b2;
-      font-size: 19px;
-      cursor: pointer;
+      font-weight: 600;
+
+      color: #52785d;
+
     }
 
     .new-list {
+
       display: flex;
+
       gap: 8px;
+
       margin-top: 20px;
+
     }
 
     #new-list-input {
+
       flex: 1;
+
       min-width: 0;
+
       padding: 12px;
+
       border: 1px solid #dde5dd;
+
       border-radius: 11px;
+
       font-size: 15px;
-      outline: none;
+
     }
 
     .create-button {
+
       border: 0;
+
       border-radius: 11px;
+
       background: #72a67e;
+
       color: white;
+
       padding: 0 16px;
-      cursor: pointer;
+
     }
 
     .close-button {
+
       width: 100%;
+
       margin-top: 18px;
+
       padding: 11px;
+
       border: 0;
+
       background: #edf2ed;
+
       color: #526158;
+
       border-radius: 11px;
-      cursor: pointer;
+
     }
+
   </style>
+
 </head>
 
 <body>
@@ -237,28 +369,24 @@
   <div class="top-label">Handleliste</div>
 
   <div class="list-header">
-    <h1 id="current-name"></h1>
 
-    <button class="lists-button" onclick="openLists()">
-      Mine lister
-    </button>
+    <h1 id="current-name">Laster...</h1>
+
+    <button class="lists-button" onclick="openLists()">Mine lister</button>
+
   </div>
 
   <div class="input-row">
-    <input
-      id="item-input"
-      type="text"
-      placeholder="Legg til vare ..."
-      autocomplete="off"
-    >
+
+    <input id="item-input" type="text" placeholder="Legg til vare ..." autocomplete="off">
 
     <button class="add-button" onclick="addItem()">+</button>
+
   </div>
 
   <div id="items"></div>
 
 </div>
-
 
 <div id="overlay" class="overlay">
 
@@ -269,93 +397,205 @@
     <div id="list-selector"></div>
 
     <div class="new-list">
-      <input
-        id="new-list-input"
-        type="text"
-        placeholder="Navn på ny liste"
-      >
 
-      <button class="create-button" onclick="createList()">
-        Opprett
-      </button>
+      <input id="new-list-input" type="text" placeholder="Navn på ny liste">
+
+      <button class="create-button" onclick="createList()">Opprett</button>
+
     </div>
 
-    <button class="close-button" onclick="closeLists()">
-      Lukk
-    </button>
+    <button class="close-button" onclick="closeLists()">Lukk</button>
 
   </div>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-  const savedData =
-    JSON.parse(localStorage.getItem("handlelister-v2"));
+  // ===== LIM INN DINE TO VERDIER HER =====
 
-  let data = savedData || {
-    current: "Dagligvarer",
+  const SUPABASE_URL = "https://zvplflsqkqafvywoxpto.supabase.co";
 
-    lists: {
-      "Dagligvarer": []
-    }
-  };
+  const SUPABASE_KEY = "sb_publishable_49pWQYYc0ns9AHeCtNfYQg_R16T-ReF";
 
+  // =======================================
 
-  function save() {
-    localStorage.setItem(
-      "handlelister-v2",
-      JSON.stringify(data)
-    );
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let lists = [];
+
+  let items = [];
+
+  let currentListId = null;
+
+  function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
   }
 
+  async function start() {
+
+    await loadLists();
+
+    if (lists.length === 0) {
+
+      const { data, error } = await db
+
+        .from("lists")
+
+        .insert({ name: "Dagligvarer" })
+
+        .select()
+
+        .single();
+
+      if (error) return showError(error);
+
+      lists = [data];
+
+    }
+
+    currentListId = lists[0].id;
+
+    await loadItems();
+
+    render();
+
+    db.channel("handleliste-live")
+
+      .on(
+
+        "postgres_changes",
+
+        { event: "*", schema: "public", table: "lists" },
+
+        async () => {
+
+          await loadLists();
+
+          if (!lists.some(list => list.id === currentListId)) {
+
+            currentListId = lists[0]?.id || null;
+
+          }
+
+          await loadItems();
+
+          render();
+
+          renderListSelector();
+
+        }
+
+      )
+
+      .on(
+
+        "postgres_changes",
+
+        { event: "*", schema: "public", table: "items" },
+
+        async () => {
+
+          await loadItems();
+
+          render();
+
+        }
+
+      )
+
+      .subscribe();
+
+  }
+
+  async function loadLists() {
+
+    const { data, error } = await db
+
+      .from("lists")
+
+      .select("*")
+
+      .order("created_at");
+
+    if (error) return showError(error);
+
+    lists = data || [];
+
+  }
+
+  async function loadItems() {
+
+    if (!currentListId) {
+
+      items = [];
+
+      return;
+
+    }
+
+    const { data, error } = await db
+
+      .from("items")
+
+      .select("*")
+
+      .eq("list_id", currentListId)
+
+      .order("created_at");
+
+    if (error) return showError(error);
+
+    items = data || [];
+
+  }
 
   function render() {
 
-    document.getElementById("current-name").textContent =
-      data.current;
+    const current = lists.find(list => list.id === currentListId);
 
-    const container =
-      document.getElementById("items");
+    document.getElementById("current-name").textContent =
+
+      current ? current.name : "Handleliste";
+
+    const container = document.getElementById("items");
 
     container.innerHTML = "";
 
-    const items = data.lists[data.current];
-
     if (items.length === 0) {
-      container.innerHTML =
-        '<div class="empty">Listen er tom</div>';
+
+      container.innerHTML = '<div class="empty">Listen er tom</div>';
 
       return;
+
     }
 
+    items.forEach(item => {
 
-    items.forEach((item, index) => {
+      const row = document.createElement("div");
 
-      const row =
-        document.createElement("div");
-
-      row.className =
-        "item" + (item.done ? " done" : "");
+      row.className = "item" + (item.done ? " done" : "");
 
       row.innerHTML = `
-        <div
-          class="check"
-          onclick="toggleItem(${index})">
-        </div>
 
-        <div
-          class="item-text"
-          onclick="toggleItem(${index})">
+        <div class="check" onclick="toggleItem(${item.id}, ${item.done})"></div>
+
+        <div class="item-text" onclick="toggleItem(${item.id}, ${item.done})">
+
           ${escapeHTML(item.name)}
+
         </div>
 
-        <button
-          class="delete-item"
-          onclick="deleteItem(${index})">
-          ×
-        </button>
+        <button class="delete-item" onclick="deleteItem(${item.id})">×</button>
+
       `;
 
       container.appendChild(row);
@@ -364,107 +604,118 @@
 
   }
 
+  async function addItem() {
 
-  function addItem() {
+    const input = document.getElementById("item-input");
 
-    const input =
-      document.getElementById("item-input");
+    const name = input.value.trim();
 
-    const name =
-      input.value.trim();
-
-    if (!name) return;
-
-    data.lists[data.current].push({
-      name: name,
-      done: false
-    });
+    if (!name || !currentListId) return;
 
     input.value = "";
 
-    save();
+    const { error } = await db.from("items").insert({
+
+      name: name,
+
+      done: false,
+
+      list_id: currentListId
+
+    });
+
+    if (error) return showError(error);
+
+    await loadItems();
+
     render();
 
     input.focus();
+
   }
 
+  async function toggleItem(id, done) {
 
-  function toggleItem(index) {
+    const { error } = await db
 
-    const item =
-      data.lists[data.current][index];
+      .from("items")
 
-    item.done = !item.done;
+      .update({ done: !done })
 
-    save();
+      .eq("id", id);
+
+    if (error) return showError(error);
+
+    await loadItems();
+
     render();
+
   }
 
+  async function deleteItem(id) {
 
-  function deleteItem(index) {
+    const { error } = await db
 
-    data.lists[data.current].splice(index, 1);
+      .from("items")
 
-    save();
+      .delete()
+
+      .eq("id", id);
+
+    if (error) return showError(error);
+
+    await loadItems();
+
     render();
-  }
 
+  }
 
   function openLists() {
 
     renderListSelector();
 
-    document
-      .getElementById("overlay")
-      .classList.add("open");
-  }
+    document.getElementById("overlay").classList.add("open");
 
+  }
 
   function closeLists() {
 
-    document
-      .getElementById("overlay")
-      .classList.remove("open");
-  }
+    document.getElementById("overlay").classList.remove("open");
 
+  }
 
   function renderListSelector() {
 
-    const selector =
-      document.getElementById("list-selector");
+    const selector = document.getElementById("list-selector");
 
     selector.innerHTML = "";
 
-    Object.keys(data.lists).forEach(name => {
+    lists.forEach(list => {
 
-      const row =
-        document.createElement("div");
+      const row = document.createElement("div");
 
       row.className = "list-choice";
 
-      const active =
-        name === data.current
-        ? " active-list"
-        : "";
+      const active = list.id === currentListId ? " active-list" : "";
 
       row.innerHTML = `
-        <div
-          class="list-choice-name${active}"
-          onclick="selectList('${encodeURIComponent(name)}')">
-          ${escapeHTML(name)}
+
+        <div class="list-choice-name${active}" onclick="selectList(${list.id})">
+
+          ${escapeHTML(list.name)}
+
         </div>
 
         ${
-          Object.keys(data.lists).length > 1
-          ?
-          `<button
-             class="delete-list"
-             onclick="deleteList('${encodeURIComponent(name)}')">
-             ×
-           </button>`
-          :
-          ""
+
+          lists.length > 1
+
+            ? `<button class="delete-list" onclick="deleteList(${list.id})">×</button>`
+
+            : ""
+
         }
+
       `;
 
       selector.appendChild(row);
@@ -473,103 +724,114 @@
 
   }
 
+  async function createList() {
 
-  function createList() {
+    const input = document.getElementById("new-list-input");
 
-    const input =
-      document.getElementById("new-list-input");
-
-    const name =
-      input.value.trim();
+    const name = input.value.trim();
 
     if (!name) return;
 
-    if (data.lists[name]) {
-      alert("Denne listen finnes allerede.");
-      return;
-    }
+    const { data, error } = await db
 
-    data.lists[name] = [];
-    data.current = name;
+      .from("lists")
+
+      .insert({ name: name })
+
+      .select()
+
+      .single();
+
+    if (error) return showError(error);
 
     input.value = "";
 
-    save();
+    await loadLists();
+
+    currentListId = data.id;
+
+    await loadItems();
+
     render();
-    renderListSelector();
+
     closeLists();
+
   }
 
+  async function selectList(id) {
 
-  function selectList(encodedName) {
+    currentListId = id;
 
-    data.current =
-      decodeURIComponent(encodedName);
+    await loadItems();
 
-    save();
     render();
+
     closeLists();
+
   }
 
+  async function deleteList(id) {
 
-  function deleteList(encodedName) {
+    if (lists.length <= 1) return;
 
-    const name =
-      decodeURIComponent(encodedName);
+    const { error } = await db
 
-    if (Object.keys(data.lists).length === 1) {
-      return;
+      .from("lists")
+
+      .delete()
+
+      .eq("id", id);
+
+    if (error) return showError(error);
+
+    await loadLists();
+
+    if (currentListId === id) {
+
+      currentListId = lists[0].id;
+
     }
 
-    delete data.lists[name];
+    await loadItems();
 
-    if (data.current === name) {
-      data.current =
-        Object.keys(data.lists)[0];
-    }
-
-    save();
     render();
+
     renderListSelector();
+
   }
 
+  function showError(error) {
 
-  function escapeHTML(text) {
+    console.error(error);
 
-    const div =
-      document.createElement("div");
+    alert("Noe gikk galt: " + error.message);
 
-    div.textContent = text;
-
-    return div.innerHTML;
   }
-
 
   document
+
     .getElementById("item-input")
-    .addEventListener("keydown", function(event) {
 
-      if (event.key === "Enter") {
-        addItem();
-      }
+    .addEventListener("keydown", event => {
+
+      if (event.key === "Enter") addItem();
 
     });
-
 
   document
-    .getElementById("new-list-input")
-    .addEventListener("keydown", function(event) {
 
-      if (event.key === "Enter") {
-        createList();
-      }
+    .getElementById("new-list-input")
+
+    .addEventListener("keydown", event => {
+
+      if (event.key === "Enter") createList();
 
     });
 
-
-  render();
+  start();
 
 </script>
 
 </body>
+
 </html>
