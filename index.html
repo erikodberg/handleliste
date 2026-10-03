@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="no">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,233 +11,565 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f5;
       margin: 0;
-      padding: 30px 20px;
-      color: #111827;
+      padding: 24px 18px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f7f2;
+      color: #25332a;
     }
 
     .app {
-      max-width: 500px;
+      max-width: 480px;
       margin: 0 auto;
     }
 
-    h1 {
-      font-size: 38px;
-      margin: 20px 0 30px;
+    .top-label {
+      font-size: 13px;
+      color: #829087;
+      margin-bottom: 5px;
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    #current-name {
+      font-size: 27px;
+      font-weight: 650;
+      margin: 0;
+      flex: 1;
+    }
+
+    .lists-button {
+      border: 0;
+      background: #e2eee2;
+      color: #52705b;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .input-row {
       display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
+      gap: 8px;
+      margin-bottom: 22px;
     }
 
-    input {
+    #item-input {
       flex: 1;
       min-width: 0;
-      font-size: 18px;
-      padding: 16px;
-      border: none;
-      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #e3e9e3;
+      border-radius: 13px;
       outline: none;
       background: white;
     }
 
-    button {
-      border: none;
-      cursor: pointer;
+    #item-input:focus {
+      border-color: #91b99b;
     }
 
     .add-button {
-      flex-shrink: 0;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: #22a65a;
+      width: 49px;
+      height: 49px;
+      border: 0;
+      border-radius: 13px;
+      background: #72a67e;
       color: white;
-      font-size: 30px;
+      font-size: 25px;
+      cursor: pointer;
     }
 
     .item {
       display: flex;
       align-items: center;
-      background: white;
-      padding: 17px;
-      margin-bottom: 8px;
-      border-radius: 14px;
-      font-size: 19px;
+      min-height: 53px;
+      padding: 12px 14px;
+      margin-bottom: 7px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid #e6ebe6;
+      border-radius: 13px;
     }
 
     .check {
-      width: 25px;
-      height: 25px;
-      border: 2px solid #aaa;
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid #9ca9a0;
       border-radius: 50%;
-      margin-right: 15px;
-      cursor: pointer;
+      margin-right: 13px;
       flex-shrink: 0;
+      cursor: pointer;
     }
 
     .item-text {
       flex: 1;
+      font-size: 16px;
       cursor: pointer;
     }
 
     .done .check {
-      background: #22a65a;
-      border-color: #22a65a;
+      background: #72a67e;
+      border-color: #72a67e;
     }
 
     .done .item-text {
       text-decoration: line-through;
-      color: #999;
+      color: #a2aaa5;
     }
 
-    .delete {
+    .delete-item {
+      border: 0;
       background: none;
-      color: #aaa;
-      font-size: 26px;
-      padding: 0 5px;
+      color: #aab2ac;
+      font-size: 22px;
+      cursor: pointer;
     }
 
     .empty {
       text-align: center;
-      color: #999;
-      margin-top: 80px;
-      font-size: 18px;
+      color: #9aa59e;
+      font-size: 14px;
+      margin-top: 65px;
+    }
+
+    /* Vindu for handlelister */
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(35, 48, 40, 0.18);
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .panel {
+      width: 100%;
+      max-width: 430px;
+      background: #fbfcfa;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 15px 50px rgba(40,60,45,0.15);
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin: 0 0 18px;
+    }
+
+    .list-choice {
+      display: flex;
+      align-items: center;
+      padding: 12px 4px;
+      border-bottom: 1px solid #edf0ed;
+    }
+
+    .list-choice-name {
+      flex: 1;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .active-list {
+      font-weight: 600;
+      color: #52785d;
+    }
+
+    .delete-list {
+      border: 0;
+      background: none;
+      color: #b0b7b2;
+      font-size: 19px;
+      cursor: pointer;
+    }
+
+    .new-list {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    #new-list-input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #dde5dd;
+      border-radius: 11px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .create-button {
+      border: 0;
+      border-radius: 11px;
+      background: #72a67e;
+      color: white;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+
+    .close-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 11px;
+      border: 0;
+      background: #edf2ed;
+      color: #526158;
+      border-radius: 11px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <h1>Handleliste</h1>
+  <div class="top-label">Handleliste</div>
 
-    <div class="input-row">
+  <div class="list-header">
+    <h1 id="current-name"></h1>
+
+    <button class="lists-button" onclick="openLists()">
+      Mine lister
+    </button>
+  </div>
+
+  <div class="input-row">
+    <input
+      id="item-input"
+      type="text"
+      placeholder="Legg til vare ..."
+      autocomplete="off"
+    >
+
+    <button class="add-button" onclick="addItem()">+</button>
+  </div>
+
+  <div id="items"></div>
+
+</div>
+
+
+<div id="overlay" class="overlay">
+
+  <div class="panel">
+
+    <h2>Mine lister</h2>
+
+    <div id="list-selector"></div>
+
+    <div class="new-list">
       <input
-        id="input"
+        id="new-list-input"
         type="text"
-        placeholder="Legg til vare ..."
-        autocomplete="off"
+        placeholder="Navn på ny liste"
       >
 
-      <button class="add-button" onclick="addItem()">+</button>
+      <button class="create-button" onclick="createList()">
+        Opprett
+      </button>
     </div>
 
-    <div id="list"></div>
+    <button class="close-button" onclick="closeLists()">
+      Lukk
+    </button>
 
   </div>
 
-  <script>
-    let items =
-      JSON.parse(localStorage.getItem("handleliste")) || [];
+</div>
 
-    function save() {
-      localStorage.setItem(
-        "handleliste",
-        JSON.stringify(items)
-      );
+
+<script>
+
+  const savedData =
+    JSON.parse(localStorage.getItem("handlelister-v2"));
+
+  let data = savedData || {
+    current: "Dagligvarer",
+
+    lists: {
+      "Dagligvarer": []
+    }
+  };
+
+
+  function save() {
+    localStorage.setItem(
+      "handlelister-v2",
+      JSON.stringify(data)
+    );
+  }
+
+
+  function render() {
+
+    document.getElementById("current-name").textContent =
+      data.current;
+
+    const container =
+      document.getElementById("items");
+
+    container.innerHTML = "";
+
+    const items = data.lists[data.current];
+
+    if (items.length === 0) {
+      container.innerHTML =
+        '<div class="empty">Listen er tom</div>';
+
+      return;
     }
 
-    function render() {
-      const list = document.getElementById("list");
 
-      list.innerHTML = "";
+    items.forEach((item, index) => {
 
-      if (items.length === 0) {
-        list.innerHTML =
-          '<div class="empty">Listen er tom</div>';
+      const row =
+        document.createElement("div");
 
-        return;
-      }
+      row.className =
+        "item" + (item.done ? " done" : "");
 
-      items.forEach((item, index) => {
+      row.innerHTML = `
+        <div
+          class="check"
+          onclick="toggleItem(${index})">
+        </div>
 
-        const row = document.createElement("div");
+        <div
+          class="item-text"
+          onclick="toggleItem(${index})">
+          ${escapeHTML(item.name)}
+        </div>
 
-        row.className =
-          "item" + (item.done ? " done" : "");
+        <button
+          class="delete-item"
+          onclick="deleteItem(${index})">
+          ×
+        </button>
+      `;
 
-        row.innerHTML = `
-          <div
-            class="check"
-            onclick="toggleItem(${index})">
-          </div>
+      container.appendChild(row);
 
-          <div
-            class="item-text"
-            onclick="toggleItem(${index})">
-            ${item.name}
-          </div>
+    });
 
-          <button
-            class="delete"
-            onclick="deleteItem(${index})">
-            ×
-          </button>
-        `;
+  }
 
-        list.appendChild(row);
-      });
-    }
 
-    function addItem() {
-      const input =
-        document.getElementById("input");
+  function addItem() {
 
-      const name = input.value.trim();
+    const input =
+      document.getElementById("item-input");
 
-      if (!name) {
-        return;
-      }
+    const name =
+      input.value.trim();
 
-      items.push({
-        name: name,
-        done: false
-      });
+    if (!name) return;
 
-      input.value = "";
+    data.lists[data.current].push({
+      name: name,
+      done: false
+    });
 
-      save();
-      render();
+    input.value = "";
 
-      input.focus();
-    }
+    save();
+    render();
 
-    function toggleItem(index) {
-      items[index].done =
-        !items[index].done;
+    input.focus();
+  }
 
-      save();
-      render();
-    }
 
-    function deleteItem(index) {
-      items.splice(index, 1);
+  function toggleItem(index) {
 
-      save();
-      render();
-    }
+    const item =
+      data.lists[data.current][index];
+
+    item.done = !item.done;
+
+    save();
+    render();
+  }
+
+
+  function deleteItem(index) {
+
+    data.lists[data.current].splice(index, 1);
+
+    save();
+    render();
+  }
+
+
+  function openLists() {
+
+    renderListSelector();
 
     document
-      .getElementById("input")
-      .addEventListener(
-        "keydown",
-        function(event) {
+      .getElementById("overlay")
+      .classList.add("open");
+  }
 
-          if (event.key === "Enter") {
-            addItem();
-          }
 
+  function closeLists() {
+
+    document
+      .getElementById("overlay")
+      .classList.remove("open");
+  }
+
+
+  function renderListSelector() {
+
+    const selector =
+      document.getElementById("list-selector");
+
+    selector.innerHTML = "";
+
+    Object.keys(data.lists).forEach(name => {
+
+      const row =
+        document.createElement("div");
+
+      row.className = "list-choice";
+
+      const active =
+        name === data.current
+        ? " active-list"
+        : "";
+
+      row.innerHTML = `
+        <div
+          class="list-choice-name${active}"
+          onclick="selectList('${encodeURIComponent(name)}')">
+          ${escapeHTML(name)}
+        </div>
+
+        ${
+          Object.keys(data.lists).length > 1
+          ?
+          `<button
+             class="delete-list"
+             onclick="deleteList('${encodeURIComponent(name)}')">
+             ×
+           </button>`
+          :
+          ""
         }
-      );
+      `;
 
+      selector.appendChild(row);
+
+    });
+
+  }
+
+
+  function createList() {
+
+    const input =
+      document.getElementById("new-list-input");
+
+    const name =
+      input.value.trim();
+
+    if (!name) return;
+
+    if (data.lists[name]) {
+      alert("Denne listen finnes allerede.");
+      return;
+    }
+
+    data.lists[name] = [];
+    data.current = name;
+
+    input.value = "";
+
+    save();
     render();
-  </script>
+    renderListSelector();
+    closeLists();
+  }
+
+
+  function selectList(encodedName) {
+
+    data.current =
+      decodeURIComponent(encodedName);
+
+    save();
+    render();
+    closeLists();
+  }
+
+
+  function deleteList(encodedName) {
+
+    const name =
+      decodeURIComponent(encodedName);
+
+    if (Object.keys(data.lists).length === 1) {
+      return;
+    }
+
+    delete data.lists[name];
+
+    if (data.current === name) {
+      data.current =
+        Object.keys(data.lists)[0];
+    }
+
+    save();
+    render();
+    renderListSelector();
+  }
+
+
+  function escapeHTML(text) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+  }
+
+
+  document
+    .getElementById("item-input")
+    .addEventListener("keydown", function(event) {
+
+      if (event.key === "Enter") {
+        addItem();
+      }
+
+    });
+
+
+  document
+    .getElementById("new-list-input")
+    .addEventListener("keydown", function(event) {
+
+      if (event.key === "Enter") {
+        createList();
+      }
+
+    });
+
+
+  render();
+
+</script>
 
 </body>
 </html>
