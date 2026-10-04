@@ -605,53 +605,73 @@
   }
 
   async function addItem() {
+  const input = document.getElementById("item-input");
+  const name = input.value.trim();
 
-    const input = document.getElementById("item-input");
+  if (!name || !currentListId) return;
 
-    const name = input.value.trim();
+  input.value = "";
 
-    if (!name || !currentListId) return;
+  // Legg varen på den aktive handlelisten
+  const { error: itemError } = await db.from("items").insert({
+    name: name,
+    done: false,
+    list_id: currentListId
+  });
 
-    input.value = "";
+  if (itemError) return showError(itemError);
 
-    const { error } = await db.from("items").insert({
+  // Se om varen allerede finnes i vareminnet
+  const { data: existingProduct, error: findError } = await db
+    .from("products")
+    .select("*")
+    .eq("name", name)
+    .maybeSingle();
 
-      name: name,
+  if (findError) return showError(findError);
 
-      done: false,
+  if (existingProduct) {
+    // Varen finnes allerede: øk telleren og oppdater sist brukt
+    const { error: updateError } = await db
+      .from("products")
+      .update({
+        use_count: existingProduct.use_count + 1,
+        last_used: new Date().toISOString()
+      })
+      .eq("id", existingProduct.id);
 
-      list_id: currentListId
+    if (updateError) return showError(updateError);
 
-    });
+  } else {
+    // Første gang vi bruker denne varen
+    const { error: productError } = await db
+      .from("products")
+      .insert({
+        name: name,
+        use_count: 1,
+        last_used: new Date().toISOString()
+      });
 
-    if (error) return showError(error);
-
-    await loadItems();
-
-    render();
-
-    input.focus();
-
+    if (productError) return showError(productError);
   }
+
+  await loadItems();
+  render();
+  input.focus();
+}
 
   async function toggleItem(id, done) {
+  const { error } = await db
+    .from("items")
+    .delete()
+    .eq("id", id);
 
-    const { error } = await db
+  if (error) return showError(error);
 
-      .from("items")
-
-      .update({ done: !done })
-
-      .eq("id", id);
-
-    if (error) return showError(error);
-
-    await loadItems();
-
-    render();
-
-  }
-
+  await loadItems();
+  render();
+}
+  
   async function deleteItem(id) {
 
     const { error } = await db
