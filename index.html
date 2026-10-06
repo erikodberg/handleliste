@@ -860,14 +860,18 @@
 
   suggestions.innerHTML = "";
 
-  if (search.length === 0) return;
-
-  const { data, error } = await db
+  let query = db
     .from("products")
     .select("*")
-    .ilike("name", search + "%")
     .order("use_count", { ascending: false })
     .limit(5);
+
+  // Hvis du har skrevet noe, vis bare varer som begynner med teksten
+  if (search.length > 0) {
+    query = query.ilike("name", search + "%");
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(error);
@@ -892,6 +896,11 @@
 document
   .getElementById("item-input")
   .addEventListener("input", showSuggestions);
+
+document
+  .getElementById("item-input")
+  .addEventListener("focus", showSuggestions);
+  
   document
 
     .getElementById("item-input")
