@@ -411,6 +411,12 @@
 
   <div id="items"></div>
 
+  <div class="recipe-import">
+  <button class="recipe-button" onclick="openRecipeImport()">
+    Importer oppskrift
+  </button>
+</div>
+
 </div>
 
 <div id="overlay" class="overlay">
@@ -433,6 +439,28 @@
 
   </div>
 
+</div>
+
+  <div id="recipe-overlay" class="overlay">
+  <div class="panel">
+    <h2>Importer oppskrift</h2>
+
+    <input
+      id="recipe-url"
+      type="url"
+      placeholder="Lim inn lenke til oppskrift"
+    >
+
+    <button class="create-button" onclick="fetchRecipe()">
+      Hent ingredienser
+    </button>
+
+    <div id="recipe-result"></div>
+
+    <button class="close-button" onclick="closeRecipeImport()">
+      Lukk
+    </button>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -729,6 +757,14 @@
 
   }
 
+  function openRecipeImport() {
+  document.getElementById("recipe-overlay").classList.add("open");
+}
+
+function closeRecipeImport() {
+  document.getElementById("recipe-overlay").classList.remove("open");
+}
+  
   function renderListSelector() {
 
     const selector = document.getElementById("list-selector");
