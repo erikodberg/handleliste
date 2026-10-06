@@ -1038,6 +1038,18 @@ document
   document
   .getElementById("item-input")
   .addEventListener("click", showSuggestions);
+
+  document.addEventListener("click", event => {
+  const input = document.getElementById("item-input");
+  const suggestions = document.getElementById("suggestions");
+
+  if (
+    !input.contains(event.target) &&
+    !suggestions.contains(event.target)
+  ) {
+    suggestions.innerHTML = "";
+  }
+});
   
   document
 
