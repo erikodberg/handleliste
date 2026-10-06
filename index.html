@@ -33,7 +33,7 @@
       max-width: 480px;
 
       margin: 0 auto;
-
+padding-bottom: 100px;
     }
 
     .top-label {
@@ -88,22 +88,38 @@
 }
 
     .input-row {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 480px;
 
-      display: flex;
+  display: flex;
+  gap: 8px;
 
-      gap: 8px;
+  padding: 10px;
+  margin: 0;
 
-      margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 18px;
+  z-index: 20;
+}
 
-    }
+#suggestions {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%);
+  width: calc(100% - 56px);
+  max-width: 460px;
 
-    #suggestions {
-  margin-top: -14px;
-  margin-bottom: 18px;
+  margin: 0;
   background: white;
   border-radius: 12px;
   overflow: hidden;
-}
+  z-index: 21;
+} 
 
 .suggestion {
   padding: 12px 16px;
@@ -383,7 +399,10 @@
 
   </div>
 
-  <div class="input-row">
+
+  <div id="items"></div>
+
+    <div class="input-row">
 
     <input id="item-input" type="text" placeholder="Legg til vare ..." autocomplete="off">
 
@@ -392,8 +411,6 @@
   </div>
   
   <div id="suggestions"></div>
-
-  <div id="items"></div>
 
   <div class="recipe-import">
   <button class="recipe-button" onclick="openRecipeImport()">
