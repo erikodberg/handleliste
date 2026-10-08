@@ -1,0 +1,11 @@
+{
+  "name": "Handleliste",
+  "short_name": "Handleliste",
+  "description": "Min enkle handleliste",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBE7A3",
+  "theme_color": "#FBE7A3",
+  "lang": "nb"
+}
